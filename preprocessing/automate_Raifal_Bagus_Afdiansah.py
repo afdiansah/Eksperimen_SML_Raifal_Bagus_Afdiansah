@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import warnings
+import os
 warnings.filterwarnings('ignore')
 
 def load_dataset(file_path):
@@ -226,9 +227,43 @@ def split_train_test(X, y, test_size=0.2, random_state=42):
     
     return X_train, X_test, y_train, y_test
 
+def save_preprocessed_data(X_train, X_test, y_train, y_test, output_dir='preprocessing'):
+    """
+    Menyimpan data yang sudah dipreprocess ke file CSV
+    
+    Parameters:
+    -----------
+    X_train, X_test, y_train, y_test : DataFrame/Series
+        Data yang sudah dipreprocess
+    output_dir : str
+        Directory untuk menyimpan file output
+    """
+    print("\n=== Menyimpan Data Preprocessing ===")
+    
+    # Gabungkan X dan y untuk train dan test
+    train_data = X_train.copy()
+    train_data['Heart Disease'] = y_train.values
+    
+    test_data = X_test.copy()
+    test_data['Heart Disease'] = y_test.values
+    
+    # Gabungkan train dan test
+    full_preprocessed = pd.concat([train_data, test_data], axis=0)
+    full_preprocessed['split'] = ['train'] * len(train_data) + ['test'] * len(test_data)
+    
+    # Simpan ke file
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, 'Heart_Disease_Preprocessing.csv')
+    full_preprocessed.to_csv(output_path, index=False)
+    
+    print(f"✅ Data tersimpan di: {output_path}")
+    print(f"Total rows: {len(full_preprocessed)}")
+    print(f"Columns: {list(full_preprocessed.columns)}")
+
 def preprocess_pipeline(file_path, target_col='Heart Disease', 
                         encoding_map={'Presence': 1, 'Absence': 0},
-                        test_size=0.2, random_state=42):
+                        test_size=0.2, random_state=42,
+                        save_output=True):
     """
     Pipeline lengkap untuk preprocessing data Heart Disease
     
@@ -244,6 +279,8 @@ def preprocess_pipeline(file_path, target_col='Heart Disease',
         Proporsi data testing
     random_state : int
         Random seed
+    save_output : bool
+        Simpan hasil preprocessing ke file
     
     Returns:
     --------
@@ -284,6 +321,10 @@ def preprocess_pipeline(file_path, target_col='Heart Disease',
         X_scaled, y, test_size, random_state
     )
     
+    # 9. Save preprocessed data
+    if save_output:
+        save_preprocessed_data(X_train, X_test, y_train, y_test)
+    
     print("\n" + "="*60)
     print("✅ PREPROCESSING SELESAI - DATA SIAP UNTUK TRAINING!")
     print("="*60)
@@ -296,7 +337,7 @@ if __name__ == "__main__":
     file_path = '../Heart_Disease_Prediction.csv'
     
     # Jalankan preprocessing pipeline
-    result = preprocess_pipeline(file_path)
+    result = preprocess_pipeline(file_path, save_output=True)
     
     if result is not None:
         X_train, X_test, y_train, y_test, scaler = result
