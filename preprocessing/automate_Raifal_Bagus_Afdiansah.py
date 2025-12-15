@@ -227,43 +227,49 @@ def split_train_test(X, y, test_size=0.2, random_state=42):
     
     return X_train, X_test, y_train, y_test
 
-def save_preprocessed_data(X_train, X_test, y_train, y_test, output_dir='preprocessing'):
+def save_preprocessed_data(X_train, X_test, y_train, y_test, dataset_name='Heart_Disease', target_col='Heart Disease'):
     """
-    Menyimpan data yang sudah dipreprocess ke file CSV
+    Menyimpan data yang sudah dipreprocess ke folder namadataset_preprocessing
     
     Parameters:
     -----------
     X_train, X_test, y_train, y_test : DataFrame/Series
         Data yang sudah dipreprocess
-    output_dir : str
-        Directory untuk menyimpan file output
+    dataset_name : str
+        Nama dataset untuk membuat folder output
+    target_col : str
+        Nama kolom target
     """
     print("\n=== Menyimpan Data Preprocessing ===")
     
+    # Buat nama folder berdasarkan nama dataset
+    output_dir = f'{dataset_name}_preprocessing'
+    os.makedirs(output_dir, exist_ok=True)
+    
     # Gabungkan X dan y untuk train dan test
     train_data = X_train.copy()
-    train_data['Heart Disease'] = y_train.values
+    train_data[target_col] = y_train.values
     
     test_data = X_test.copy()
-    test_data['Heart Disease'] = y_test.values
+    test_data[target_col] = y_test.values
     
     # Gabungkan train dan test
     full_preprocessed = pd.concat([train_data, test_data], axis=0)
     full_preprocessed['split'] = ['train'] * len(train_data) + ['test'] * len(test_data)
     
-    # Simpan ke file
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, 'Heart_Disease_Preprocessing.csv')
+    # Simpan ke file di dalam folder
+    output_path = os.path.join(output_dir, f'{dataset_name}_preprocessed.csv')
     full_preprocessed.to_csv(output_path, index=False)
     
-    print(f"✅ Data tersimpan di: {output_path}")
+    print(f"✅ Data tersimpan di folder: {output_dir}/")
+    print(f"✅ File: {output_path}")
     print(f"Total rows: {len(full_preprocessed)}")
     print(f"Columns: {list(full_preprocessed.columns)}")
 
 def preprocess_pipeline(file_path, target_col='Heart Disease', 
                         encoding_map={'Presence': 1, 'Absence': 0},
                         test_size=0.2, random_state=42,
-                        save_output=True):
+                        save_output=True, dataset_name='Heart_Disease'):
     """
     Pipeline lengkap untuk preprocessing data Heart Disease
     
@@ -281,6 +287,8 @@ def preprocess_pipeline(file_path, target_col='Heart Disease',
         Random seed
     save_output : bool
         Simpan hasil preprocessing ke file
+    dataset_name : str
+        Nama dataset untuk folder output
     
     Returns:
     --------
@@ -323,7 +331,7 @@ def preprocess_pipeline(file_path, target_col='Heart Disease',
     
     # 9. Save preprocessed data
     if save_output:
-        save_preprocessed_data(X_train, X_test, y_train, y_test)
+        save_preprocessed_data(X_train, X_test, y_train, y_test, dataset_name, target_col)
     
     print("\n" + "="*60)
     print("✅ PREPROCESSING SELESAI - DATA SIAP UNTUK TRAINING!")
@@ -334,10 +342,14 @@ def preprocess_pipeline(file_path, target_col='Heart Disease',
 # Contoh penggunaan
 if __name__ == "__main__":
     # Path ke dataset
-    file_path = '../Heart_Disease_Prediction.csv'
+    file_path = '../Heart_Disease_Raw.csv'
     
-    # Jalankan preprocessing pipeline
-    result = preprocess_pipeline(file_path, save_output=True)
+    # Jalankan preprocessing pipeline dengan nama dataset
+    result = preprocess_pipeline(
+        file_path, 
+        save_output=True,
+        dataset_name='Heart_Disease'
+    )
     
     if result is not None:
         X_train, X_test, y_train, y_test, scaler = result
