@@ -10,6 +10,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:  # Trigger manual
 
+permissions:
+  contents: write
+
 jobs:
   preprocess-data:
     runs-on: ubuntu-latest
