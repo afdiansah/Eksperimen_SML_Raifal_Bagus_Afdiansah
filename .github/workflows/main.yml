@@ -1,0 +1,66 @@
+name: Heart Disease Data Preprocessing
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'Heart_Disease_Prediction.csv'
+      - 'preprocessing/automate_Heart_Disease_Prediction.py'
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:  # Trigger manual
+
+jobs:
+  preprocess-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas numpy scikit-learn matplotlib seaborn
+    
+    - name: Run preprocessing
+      run: |
+        cd preprocessing
+        python automate_Heart_Disease_Prediction.py
+    
+    - name: Check if preprocessed data exists
+      id: check_files
+      run: |
+        if [ -f "preprocessing/Heart_Disease_Preprocessing.csv" ]; then
+          echo "file_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "file_exists=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Upload preprocessed data as artifact
+      if: steps.check_files.outputs.file_exists == 'true'
+      uses: actions/upload-artifact@v3
+      with:
+        name: preprocessed-dataset
+        path: preprocessing/Heart_Disease_Preprocessing.csv
+        retention-days: 30
+    
+    - name: Commit preprocessed data
+      if: steps.check_files.outputs.file_exists == 'true'
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add preprocessing/Heart_Disease_Preprocessing.csv
+        git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto: Update preprocessed dataset [skip ci]"
+    
+    - name: Push changes
+      if: steps.check_files.outputs.file_exists == 'true'
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
