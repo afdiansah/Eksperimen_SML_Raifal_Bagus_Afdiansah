@@ -1,7 +1,5 @@
 # Eksperimen_SML_Raifal_Bagus_Afdiansah
 
-[![Heart Disease Data Preprocessing](https://github.com/YOUR_USERNAME/Eksperimen_SML_Raifal_Bagus_Afdiansah/actions/workflows/preprocessing.yml/badge.svg)](https://github.com/YOUR_USERNAME/Eksperimen_SML_Raifal_Bagus_Afdiansah/actions/workflows/preprocessing.yml)
-
 Eksperimen Machine Learning untuk prediksi penyakit jantung dengan preprocessing otomatis menggunakan GitHub Actions.
 
 ## 📁 Struktur Folder
@@ -14,7 +12,7 @@ Eksperimen_SML_Raifal_Bagus_Afdiansah/
 ├── Heart_Disease_Prediction.csv       # Dataset raw
 ├── preprocessing/
 │   ├── Eksperimen_Raifal_Bagus_Afdiansah.ipynb
-│   ├── automate_Heart_Disease_Prediction.py
+│   ├── automate_Raifal_Bagus_Afdiansah.py
 │   └── Heart_Disease_Preprocessing.csv  # Dataset hasil preprocessing
 └── README.md
 ```
