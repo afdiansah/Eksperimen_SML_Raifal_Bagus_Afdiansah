@@ -5,7 +5,7 @@ on:
     branches: [ main, master ]
     paths:
       - 'Heart_Disease_Prediction.csv'
-      - 'preprocessing/automate_Heart_Disease_Prediction.py'
+      - 'preprocessing/automate_Raifal_Bagus_Afdiansah.py'
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:  # Trigger manual
@@ -16,7 +16,7 @@ jobs:
     
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -31,7 +31,7 @@ jobs:
     - name: Run preprocessing
       run: |
         cd preprocessing
-        python automate_Heart_Disease_Prediction.py
+        python automate_Raifal_Bagus_Afdiansah.py
     
     - name: Check if preprocessed data exists
       id: check_files
@@ -44,7 +44,7 @@ jobs:
     
     - name: Upload preprocessed data as artifact
       if: steps.check_files.outputs.file_exists == 'true'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: preprocessed-dataset
         path: preprocessing/Heart_Disease_Preprocessing.csv
