@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'Heart_Disease_Prediction.csv'
+      - 'Heart_Disease_Raw.csv'
       - 'preprocessing/automate_Raifal_Bagus_Afdiansah.py'
   pull_request:
     branches: [ main, master ]
@@ -36,7 +36,7 @@ jobs:
     - name: Check if preprocessed data exists
       id: check_files
       run: |
-        if [ -f "preprocessing/Heart_Disease_Preprocessing.csv" ]; then
+        if [ -d "Heart_Disease_preprocessing" ] && [ -f "Heart_Disease_preprocessing/Heart_Disease_preprocessed.csv" ]; then
           echo "file_exists=true" >> $GITHUB_OUTPUT
         else
           echo "file_exists=false" >> $GITHUB_OUTPUT
@@ -47,7 +47,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: preprocessed-dataset
-        path: preprocessing/Heart_Disease_Preprocessing.csv
+        path: Heart_Disease_preprocessing/
         retention-days: 30
     
     - name: Commit preprocessed data
@@ -55,7 +55,7 @@ jobs:
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add preprocessing/Heart_Disease_Preprocessing.csv
+        git add Heart_Disease_preprocessing/
         git diff --quiet && git diff --staged --quiet || git commit -m "🤖 Auto: Update preprocessed dataset [skip ci]"
     
     - name: Push changes
