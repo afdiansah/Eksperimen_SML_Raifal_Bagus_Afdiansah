@@ -341,8 +341,8 @@ def preprocess_pipeline(file_path, target_col='Heart Disease',
 
 # Contoh penggunaan
 if __name__ == "__main__":
-    # Path ke dataset
-    file_path = '../Heart_Disease_Raw.csv'
+    # Path ke dataset (dari root folder)
+    file_path = 'Heart_Disease_Raw.csv'
     
     # Jalankan preprocessing pipeline dengan nama dataset
     result = preprocess_pipeline(

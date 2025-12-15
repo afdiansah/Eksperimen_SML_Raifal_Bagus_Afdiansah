@@ -30,8 +30,7 @@ jobs:
     
     - name: Run preprocessing
       run: |
-        cd preprocessing
-        python automate_Raifal_Bagus_Afdiansah.py
+        python preprocessing/automate_Raifal_Bagus_Afdiansah.py
     
     - name: Check if preprocessed data exists
       id: check_files
