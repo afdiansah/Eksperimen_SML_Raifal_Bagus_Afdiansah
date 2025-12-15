@@ -258,7 +258,7 @@ def save_preprocessed_data(X_train, X_test, y_train, y_test, dataset_name='Heart
     full_preprocessed['split'] = ['train'] * len(train_data) + ['test'] * len(test_data)
     
     # Simpan ke file di dalam folder
-    output_path = os.path.join(output_dir, f'{dataset_name}_preprocessed.csv')
+    output_path = os.path.join(output_dir, f'{dataset_name}_preprocessing.csv')
     full_preprocessed.to_csv(output_path, index=False)
     
     print(f"✅ Data tersimpan di folder: {output_dir}/")

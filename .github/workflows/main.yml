@@ -36,7 +36,7 @@ jobs:
     - name: Check if preprocessed data exists
       id: check_files
       run: |
-        if [ -d "Heart_Disease_preprocessing" ] && [ -f "Heart_Disease_preprocessing/Heart_Disease_preprocessed.csv" ]; then
+        if [ -d "Heart_Disease_preprocessing" ] && [ -f "Heart_Disease_preprocessing/Heart_Disease_preprocessing.csv" ]; then
           echo "file_exists=true" >> $GITHUB_OUTPUT
         else
           echo "file_exists=false" >> $GITHUB_OUTPUT
