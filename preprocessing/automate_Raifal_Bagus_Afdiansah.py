@@ -242,8 +242,8 @@ def save_preprocessed_data(X_train, X_test, y_train, y_test, dataset_name='Heart
     """
     print("\n=== Menyimpan Data Preprocessing ===")
     
-    # Buat nama folder berdasarkan nama dataset
-    output_dir = f'{dataset_name}_preprocessing'
+    # Buat nama folder berdasarkan nama dataset di dalam folder preprocessing
+    output_dir = os.path.join('preprocessing', f'{dataset_name}_preprocessing')
     os.makedirs(output_dir, exist_ok=True)
     
     # Gabungkan X dan y untuk train dan test
@@ -341,8 +341,8 @@ def preprocess_pipeline(file_path, target_col='Heart Disease',
 
 # Contoh penggunaan
 if __name__ == "__main__":
-    # Path ke dataset (dari root folder)
-    file_path = 'Heart_Disease_Raw.csv'
+    # Path ke dataset
+    file_path = '../Heart_Disease_Raw.csv'
     
     # Jalankan preprocessing pipeline dengan nama dataset
     result = preprocess_pipeline(
