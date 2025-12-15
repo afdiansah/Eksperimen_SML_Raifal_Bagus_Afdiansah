@@ -3,9 +3,6 @@ name: Heart Disease Data Preprocessing
 on:
   push:
     branches: [ main, master ]
-    paths:
-      - 'Heart_Disease_Raw.csv'
-      - 'preprocessing/automate_Raifal_Bagus_Afdiansah.py'
   pull_request:
     branches: [ main, master ]
   workflow_dispatch:  # Trigger manual
