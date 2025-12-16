@@ -8,12 +8,13 @@ Eksperimen Machine Learning untuk prediksi penyakit jantung dengan preprocessing
 Eksperimen_SML_Raifal_Bagus_Afdiansah/
 ├── .github/
 │   └── workflows/
-│       └── preprocessing.yml          # GitHub Actions workflow
-├── Heart_Disease_Prediction.csv       # Dataset raw
+│       └── main.yml                   # GitHub Actions workflow
+├── Heart_Disease_Raw.csv              # Dataset raw
 ├── preprocessing/
 │   ├── Eksperimen_Raifal_Bagus_Afdiansah.ipynb
 │   ├── automate_Raifal_Bagus_Afdiansah.py
-│   └── Heart_Disease_Preprocessing.csv  # Dataset hasil preprocessing
+│   └── Heart_Disease_preprocessing/
+│       └── Heart_Disease_preprocessing.csv  # Dataset hasil preprocessing
 └── README.md
 ```
 
@@ -52,13 +53,13 @@ Eksperimen_SML_Raifal_Bagus_Afdiansah/
 
 Workflow akan otomatis berjalan ketika:
 1. **Push** ke branch `main`/`master` yang mengubah:
-   - `Heart_Disease_Prediction.csv`
-   - `preprocessing/automate_Heart_Disease_Prediction.py`
+   - `Heart_Disease_Raw.csv`
+   - `preprocessing/automate_Raifal_Bagus_Afdiansah.py`
 2. **Pull Request** ke branch `main`/`master`
 3. **Manual Trigger** melalui tab Actions
 
 ### Output Workflow:
-- File `Heart_Disease_Preprocessing.csv` di folder `preprocessing/`
+- File `Heart_Disease_preprocessing.csv` di folder `preprocessing/Heart_Disease_preprocessing/`
 - Artifact yang dapat diunduh (tersimpan 30 hari)
 
 ## 💻 Cara Penggunaan
@@ -77,16 +78,16 @@ pip install pandas numpy scikit-learn matplotlib seaborn
 ### 3. Jalankan Preprocessing Manual
 ```bash
 cd preprocessing
-python automate_Heart_Disease_Prediction.py
+python automate_Raifal_Bagus_Afdiansah.py
 ```
 
 ### 4. Gunakan dalam Python
 ```python
-from preprocessing.automate_Heart_Disease_Prediction import preprocess_pipeline
+from preprocessing.automate_Raifal_Bagus_Afdiansah import preprocess_pipeline
 
 # Preprocessing otomatis
 X_train, X_test, y_train, y_test, scaler = preprocess_pipeline(
-    'Heart_Disease_Prediction.csv',
+    'Heart_Disease_Raw.csv',
     save_output=True
 )
 ```
@@ -106,7 +107,7 @@ X_train, X_test, y_train, y_test, scaler = preprocess_pipeline(
 
 ## 🛠️ Teknologi
 
-- **Python 3.10**
+- **Python 3.12**
 - **Pandas** - Data manipulation
 - **NumPy** - Numerical computing
 - **Scikit-learn** - Machine learning
